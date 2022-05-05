@@ -146,9 +146,15 @@ const getWorkComposition = (work, testDrafts) => {
 
     if (work.partsWorks.length > 0) {
         result += work.partsWorks.map(partsWorksItem => {
-            const tmp = testDrafts.find(draft => draft.id === partsWorksItem.draftId)?.stampParts.find(part => part.id === partsWorksItem.partId);
+            const d = testDrafts.find(draft => draft.id === partsWorksItem.draftId);
 
-            return `- ${tmp ? `${tmp.number}: ${tmp.name}` : 'Чертеж ' + partsWorksItem.name} - ${partsWorksItem.quantity} шт.`
+            if (d) {
+                const tmp = d.stampParts.find(part => part.id === partsWorksItem.partId);
+
+                return `- ${tmp ? `${tmp.number}: ${tmp.name}` : 'Чертеж ' + partsWorksItem.name} - ${partsWorksItem.quantity} шт.`
+            } else {
+                return '';
+            }
         }).join('\n')
     }
 
